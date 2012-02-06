@@ -14,13 +14,15 @@ with this program; if not, write to the Free Software Foundation, Inc.,
  */
 package org.patterncoder.source;
 
-import java.io.*;
-import java.util.ArrayList;
 import bluej.extensions.ProjectNotOpenException;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import org.patterncoder.BlueJHandler;
 import org.patterncoder.ErrorHandler;
 import org.patterncoder.util.PatternCodeFileFilter;
+import org.xml.sax.SAXException;
 
 /**
  * Deals with the directories required by the extension.
@@ -171,12 +173,8 @@ public class XMLSourceHandler implements PatternSourceManager {
             if (f1.exists()) {
                 return f1;
             } else {
-                try {
                     f1 = new File(BlueJHandler.getInstance().getProjectDir(), EXTENSION_DIR_NAME + "/" + PATTERN_FILES_DIR_NAME);
-                } catch (ProjectNotOpenException exc) {
-                    System.out.println(exc + "Project not open");
-                }
-
+               
                 if (f1.exists()) {
                     return f1;
                 } else {
