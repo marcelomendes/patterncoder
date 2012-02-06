@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.patterncoder.BlueJHandler;
 import org.patterncoder.ErrorHandler;
 import org.patterncoder.util.PatternCodeFileFilter;
@@ -173,7 +175,14 @@ public class XMLSourceHandler implements PatternSourceManager {
             if (f1.exists()) {
                 return f1;
             } else {
+                try
+                {
                     f1 = new File(BlueJHandler.getInstance().getProjectDir(), EXTENSION_DIR_NAME + "/" + PATTERN_FILES_DIR_NAME);
+                }
+                catch (ProjectNotOpenException ex)
+                {
+                    Logger.getLogger(XMLSourceHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
                
                 if (f1.exists()) {
                     return f1;

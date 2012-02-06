@@ -18,6 +18,10 @@
  */
 package org.patterncoder;
 
+import bluej.extensions.BPackage;
+import bluej.extensions.BlueJ;
+import bluej.extensions.PackageNotFoundException;
+import bluej.extensions.ProjectNotOpenException;
 import java.io.File;
 
 /**
