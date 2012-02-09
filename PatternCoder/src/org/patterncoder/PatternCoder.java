@@ -19,12 +19,17 @@
 
 package org.patterncoder;
 
-import bluej.extensions.event.*;
-import bluej.extensions.*;
+import bluej.extensions.BPackage;
+import bluej.extensions.BlueJ;
+import bluej.extensions.Extension;
+import bluej.extensions.MenuGenerator;
+import bluej.extensions.event.PackageEvent;
+import bluej.extensions.event.PackageListener;
+import java.awt.event.ActionEvent;
+import java.io.FileNotFoundException;
 import java.net.URL;
-import javax.swing.*;
-import java.awt.event.*;
-import java.io.*;
+import javax.swing.AbstractAction;
+import javax.swing.JMenuItem;
 
 /**
  *Main class of the Design Patterns Extension.
