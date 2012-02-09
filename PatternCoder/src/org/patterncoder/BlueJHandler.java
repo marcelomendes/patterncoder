@@ -36,6 +36,7 @@ public class BlueJHandler
      * Singleton
      */
     private static BlueJHandler singleton = null;
+    
     public static BlueJ thisBlueJ = null;
 
     /**
