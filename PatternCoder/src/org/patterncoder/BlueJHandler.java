@@ -30,21 +30,19 @@ import java.io.File;
  *
  * @author Michael Nairn
  */
-public class BlueJHandler
-{
+public class BlueJHandler {
     /*
      * Singleton
      */
-    private static BlueJHandler singleton = null;
-    
+
+    private static BlueJHandler singleton = new BlueJHandler();
     public static BlueJ thisBlueJ = null;
 
     /**
      * Class Constructor, declared private in order to avoid multiple instances
      * being created.
      */
-    private BlueJHandler()
-    {
+    private BlueJHandler() {
     }
 
     /**
@@ -52,12 +50,7 @@ public class BlueJHandler
      *
      * @return the single instance of the BlueJHandler object.
      */
-    public static synchronized BlueJHandler getInstance()
-    {
-        if (singleton == null)
-        {
-            singleton = new BlueJHandler();
-        }
+    public static synchronized BlueJHandler getInstance() {
         return singleton;
     }
 
@@ -66,8 +59,7 @@ public class BlueJHandler
      *
      * @param thisBlueJ The proxy object currently being used.
      */
-    public synchronized void setBlueJ(BlueJ thisBlueJ)
-    {
+    public synchronized void setBlueJ(BlueJ thisBlueJ) {
         // this.thisBlueJ = thisBlueJ;
         BlueJHandler.thisBlueJ = thisBlueJ;
     }
@@ -78,8 +70,7 @@ public class BlueJHandler
      *
      * @return the current users BlueJ configuration directory.
      */
-    public File getUserConfigDir()
-    {
+    public File getUserConfigDir() {
         return thisBlueJ.getUserConfigDir();
     }
 
@@ -88,8 +79,7 @@ public class BlueJHandler
      *
      * @return the BlueJ directory.
      */
-    public File getBlueJDir()
-    {
+    public File getBlueJDir() {
         return thisBlueJ.getSystemLibDir();
     }
 
@@ -100,8 +90,7 @@ public class BlueJHandler
      * open.
      * @return the Project directory.
      */
-    public File getProjectDir() throws ProjectNotOpenException
-    {
+    public File getProjectDir() throws ProjectNotOpenException {
         return thisBlueJ.getCurrentPackage().getProject().getDir();
     }
 
@@ -114,8 +103,7 @@ public class BlueJHandler
      * found.
      * @return the package directory.
      */
-    public File getCurrentPackageDir() throws ProjectNotOpenException, PackageNotFoundException
-    {
+    public File getCurrentPackageDir() throws ProjectNotOpenException, PackageNotFoundException {
         return getCurrentPackage().getDir();
     }
 
@@ -125,8 +113,7 @@ public class BlueJHandler
      * @return the package currently opened.
      * @see bluej.extensions.BPackage
      */
-    private BPackage getCurrentPackage()
-    {
+    private BPackage getCurrentPackage() {
         return thisBlueJ.getCurrentPackage();
     }
 
@@ -140,8 +127,7 @@ public class BlueJHandler
      * found.
      * @return the name of the package.
      */
-    public String getCurrentPackageName() throws ProjectNotOpenException, PackageNotFoundException
-    {
+    public String getCurrentPackageName() throws ProjectNotOpenException, PackageNotFoundException {
         return thisBlueJ.getCurrentPackage().getName();
     }
 
@@ -151,14 +137,10 @@ public class BlueJHandler
      *
      * @param className the name of the class to add.
      */
-    public void addClass(String className)
-    {
-        try
-        {
+    public void addClass(String className) {
+        try {
             thisBlueJ.getCurrentPackage().newClass(className);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
@@ -167,14 +149,10 @@ public class BlueJHandler
     /**
      * Reloads the current BlueJ package.
      */
-    public void reload()
-    {
-        try
-        {
+    public void reload() {
+        try {
             thisBlueJ.getCurrentPackage().reload();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
