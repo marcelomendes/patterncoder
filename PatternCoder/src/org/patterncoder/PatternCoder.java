@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-package org.patterncoder; 
+package org.patterncoder;
 
 import bluej.extensions.BPackage;
 import bluej.extensions.BlueJ;
@@ -41,8 +41,8 @@ import org.patterncoder.utils.FileHandler;
  *
  * @author Michael Nairn
  */
-public class PatternCoder extends Extension implements ActionListener
-{
+public class PatternCoder extends Extension implements ActionListener {
+
     private final String FAIL_OPEN = java.util.ResourceBundle.getBundle("org/patterncoder/Bundle").getString("FAIL_OPEN");
     private final String ERROR_URL = java.util.ResourceBundle.getBundle("org/patterncoder/Bundle").getString("UNREACHABLE_LINK");
     public static final String VERSION = java.util.ResourceBundle.getBundle("org/patterncoder/Bundle").getString("VERSION");
@@ -59,8 +59,7 @@ public class PatternCoder extends Extension implements ActionListener
      * @param bluej The BlueJ proxy object
      */
     @Override
-    public void startup(BlueJ bluej)
-    {
+    public void startup(BlueJ bluej) {
         this.bluej = bluej;
         BlueJHandler.getInstance().setBlueJ(bluej);
         FileHandler.setBlueJ(bluej);
@@ -76,8 +75,7 @@ public class PatternCoder extends Extension implements ActionListener
      *
      * @return PatternCoder Frame
      */
-    public static JFrame getFrame()
-    {
+    public static JFrame getFrame() {
         return patFrame;
     }
 
@@ -87,8 +85,7 @@ public class PatternCoder extends Extension implements ActionListener
      * @return A boolean value, representing whether or not it is compatible
      */
     @Override
-    public boolean isCompatible()
-    {
+    public boolean isCompatible() {
         return true;
     }
 
@@ -98,8 +95,7 @@ public class PatternCoder extends Extension implements ActionListener
      * @return The version of the extension
      */
     @Override
-    public String getVersion()
-    {
+    public String getVersion() {
         return VERSION;
     }
 
@@ -109,8 +105,7 @@ public class PatternCoder extends Extension implements ActionListener
      * @return The name of the Extension
      */
     @Override
-    public String getName()
-    {
+    public String getName() {
         return NAME;
     }
 
@@ -119,8 +114,7 @@ public class PatternCoder extends Extension implements ActionListener
      * tidying up to be done prior to closing.
      */
     @Override
-    public void terminate()
-    {
+    public void terminate() {
         //
     }
 
@@ -130,8 +124,7 @@ public class PatternCoder extends Extension implements ActionListener
      * @return A description of the extension.
      */
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return DESCRIPTION;
     }
 
@@ -141,14 +134,10 @@ public class PatternCoder extends Extension implements ActionListener
      * @return A URL address
      */
     @Override
-    public URL getURL()
-    {
-        try
-        {
+    public URL getURL() {
+        try {
             return new URL(EXT_URL);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ErrorDialog errorDialog = new ErrorDialog(ERROR_URL + ex.getMessage(), ex);
             errorDialog.setVisible(true);
             return null;
@@ -162,22 +151,17 @@ public class PatternCoder extends Extension implements ActionListener
      * @param anEvent The ActionEvent which caused the method to be called.
      */
     @Override
-    public void actionPerformed(ActionEvent anEvent)
-    {
-        try
-        {
+    public void actionPerformed(ActionEvent anEvent) {
+        try {
             EnumPatterns[] enums = EnumPatterns.values();
-            for (EnumPatterns tempEnum : enums)
-            {
+            for (EnumPatterns tempEnum : enums) {
                 tempEnum.init();
             }
             FileHandler.setPackage(recentPackage);
             patFrame = new PatternCoderFrame(bluej);
             patFrame.setVisible(true);
 
-        }
-        catch (Throwable ex)
-        {
+        } catch (Throwable ex) {
             new ErrorDialog(FAIL_OPEN + ex.getMessage(), ex).setVisible(true);
         }
     }
@@ -188,8 +172,8 @@ public class PatternCoder extends Extension implements ActionListener
      *
      * Methods within this class, deal with any actions on that menu option.
      */
-    class PatternCoderMenuGenerator extends MenuGenerator
-    {
+    class PatternCoderMenuGenerator extends MenuGenerator {
+
         /**
          * Generates the menu item that is displayed on the tools menu and
          * returns it
@@ -198,8 +182,7 @@ public class PatternCoder extends Extension implements ActionListener
          * @return A new JMenuItem object with correct header and actions
          */
         @Override
-        public JMenuItem getToolsMenuItem(BPackage aPackage)
-        {
+        public JMenuItem getToolsMenuItem(BPackage aPackage) {
             String toolTipp = java.util.ResourceBundle.getBundle("org/patterncoder/Bundle").getString("ABOUT");
             recentPackage = aPackage;
             JMenuItem tempItem = new JMenuItem(java.util.ResourceBundle.getBundle("org/patterncoder/Bundle").getString("MENU_ITEM"));
@@ -216,10 +199,8 @@ public class PatternCoder extends Extension implements ActionListener
          * @param jmi The extension menu item, on the tools menu.
          */
         @Override
-        public void notifyPostToolsMenu(BPackage bluejPackage, JMenuItem menuItem)
-        {
-            if (bluejPackage == null)
-            {
+        public void notifyPostToolsMenu(BPackage bluejPackage, JMenuItem menuItem) {
+            if (bluejPackage == null) {
                 menuItem.setEnabled(false);
             }
         }
