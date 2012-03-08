@@ -484,7 +484,8 @@ public class PatternCoderFrame extends javax.swing.JFrame
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnNextActionPerformed
     {//GEN-HEADEREND:event_btnNextActionPerformed
-       if (btnNext.getText().equalsIgnoreCase(BTN_NEXT_FINISH_TEXT))
+btnNext.setEnabled(true);
+        if (btnNext.getText().equalsIgnoreCase(BTN_NEXT_FINISH_TEXT))
        {
           try
           {
