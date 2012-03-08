@@ -26,7 +26,6 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.patterncoder.delegate.ErrorDialog;
 import org.patterncoder.utils.FileHandler;
@@ -38,205 +37,184 @@ import org.xml.sax.SAXException;
  *
  * @author Florian Siebler
  */
-public enum EnumPatterns
-{
-   BASIC(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_BASIC RELATIONSHIP"), "basic", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_BASIC")),
-   CREATIONAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_CREATIONAL_PATTERNS"), "creational", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_CREATIONAL")),
-   BEHAVIOURAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_BEHAVIORAL_PATTERNS"), "behavioral", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_BEHAVIORAL")),
-   STRUCTURAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_STRUCTURAL_PATTERNS"), "structural", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_STRUCTURAL")),
-   OTHERS(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_NON_GOF"), "other", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_NON_GOF"));
-   /**
-    * Description of the category
-    */
-   private final String DESCRIPTION;
-   /**
-    * Directory where the patternFiles are stored
-    */
-   private String SUB_DIR;
-   /**
-    * Contains all design patterns of this categorie
-    */
-   private ArrayList<Pattern> patterns;
-   /**
-    * Gives a description of the category
-    */
-   private String EXPLAIN;
+public enum EnumPatterns {
 
-   /**
-    * Initializes the enums
-    *
-    * @param description Description of Enum
-    * @param subDir Directory where the patternFiles are stored
-    */
-   private EnumPatterns(String description, String subDir, String explain)
-   {
-      this.DESCRIPTION = description;
-      this.SUB_DIR = subDir;
-      this.EXPLAIN = explain;
-      this.resetPatterns();
-   }
+    BASIC(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_BASIC RELATIONSHIP"), "basic", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_BASIC")),
+    CREATIONAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_CREATIONAL_PATTERNS"), "creational", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_CREATIONAL")),
+    BEHAVIOURAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_BEHAVIORAL_PATTERNS"), "behavioral", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_BEHAVIORAL")),
+    STRUCTURAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_STRUCTURAL_PATTERNS"), "structural", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_STRUCTURAL")),
+    OTHERS(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_NON_GOF"), "other", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_NON_GOF"));
+    /**
+     * Description of the category
+     */
+    private final String DESCRIPTION;
+    /**
+     * Directory where the patternFiles are stored
+     */
+    private String SUB_DIR;
+    /**
+     * Contains all design patterns of this categorie
+     */
+    private ArrayList<Pattern> patterns;
+    /**
+     * Gives a description of the category
+     */
+    private String EXPLAIN;
 
-   /**
-    * Returns an Explanation of the category
-    *
-    * @return Explanation of category
-    */
-   public String getExplanation()
-   {
-      return EXPLAIN;
-   }
+    /**
+     * Initializes the enums
+     *
+     * @param description Description of Enum
+     * @param subDir Directory where the patternFiles are stored
+     */
+    private EnumPatterns(String description, String subDir, String explain) {
+        this.DESCRIPTION = description;
+        this.SUB_DIR = subDir;
+        this.EXPLAIN = explain;
+        this.resetPatterns();
+    }
 
-   /**
-    * Creates a new list of patterns
-    */
-   public void resetPatterns()
-   {
-      patterns = new ArrayList<Pattern>();
-   }
+    /**
+     * Returns an Explanation of the category
+     *
+     * @return Explanation of category
+     */
+    public String getExplanation() {
+        return EXPLAIN;
+    }
 
-   /**
-    * Return the index of the given node
-    *
-    * @param node Node to search
-    * @return Index of node in list
-    */
-   int getIndexOf(Object node)
-   {
-      return patterns.indexOf(node);
-   }
+    /**
+     * Creates a new list of patterns
+     */
+    public void resetPatterns() {
+        patterns = new ArrayList<Pattern>();
+    }
 
-   /**
-    * Returns the number of patterns in this category
-    *
-    * @return Number of patterns
-    */
-   public int size()
-   {
-      return patterns.size();
-   }
+    /**
+     * Return the index of the given node
+     *
+     * @param node Node to search
+     * @return Index of node in list
+     */
+    int getIndexOf(Object node) {
+        return patterns.indexOf(node);
+    }
 
-   /**
-    * Return a specified pattern
-    *
-    * @param index Index of the pattern in this category
-    * @return Specified pattern
-    */
-   public Pattern get(int index)
-   {
-      return patterns.get(index);
-   }
-   
-   public void init()
-           throws FileNotFoundException, ZipException, IOException, SAXException, ParserConfigurationException, Exception
-   {
-      this.resetPatterns();
-      Map<String, String> templateList = new HashMap<String, String>();
-      File coderDir = FileHandler.findPatternCoderDir();
-      File patDir = new File(coderDir, SUB_DIR);
-      if (!patDir.exists())
-      {
-         patDir.mkdir();
-      }
-      File[] dateien = patDir.listFiles();
-      for (File temp : dateien)
-      {
-         Pattern pattern = null;
-         Image image = null;
-         ZipFile zipFile = new ZipFile(temp);
-         Enumeration entries = zipFile.entries();
-         while (entries.hasMoreElements())
-         {
-            ZipEntry eintrag = (ZipEntry) entries.nextElement();
-            if (!eintrag.isDirectory())
-            {
-               String name = eintrag.getName();
-               String tempName = name.toUpperCase();
-               InputStream inputStream = zipFile.getInputStream(eintrag);
+    /**
+     * Returns the number of patterns in this category
+     *
+     * @return Number of patterns
+     */
+    public int size() {
+        return patterns.size();
+    }
 
-               //convert InputStream to String
-               int number = inputStream.available();
-               byte[] buffer = new byte[number];
-               inputStream.read(buffer);
-               String content = new String(buffer);
-               
-               if (tempName.endsWith(".XML"))
-               {
-                  pattern = readXML(content);
-               }
-               if (tempName.endsWith(".TMPL"))
-               {
-                  String[] split = name.split("/");
-                  name = split[split.length - 1];
-                  templateList.put(name, content);
-               }
-               if (tempName.endsWith(".BMP") || tempName.endsWith(".JPG") || tempName.endsWith(".GIF"))
-               {
-                  try
-                  {
-                     ByteArrayInputStream tempStream = new ByteArrayInputStream(buffer);
-                     image = ImageIO.read(tempStream);
-                  }
-                  catch (Throwable t)
-                  {
-                     new ErrorDialog(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("IMAGE_NOT_CREATED") + t.getMessage(), t).setVisible(true);
-                  }
-               }
-               
-               
+    /**
+     * Return a specified pattern
+     *
+     * @param index Index of the pattern in this category
+     * @return Specified pattern
+     */
+    public Pattern get(int index) {
+        return patterns.get(index);
+    }
+
+    public void init()
+            throws FileNotFoundException, ZipException, IOException, SAXException, ParserConfigurationException, Exception {
+        this.resetPatterns();
+        Map<String, String> templateList = new HashMap<String, String>();
+        File coderDir = FileHandler.findPatternCoderDir();
+        File patDir = new File(coderDir, SUB_DIR);
+        if (!patDir.exists()) {
+            patDir.mkdir();
+        }
+        File[] dateien = patDir.listFiles();
+        for (File temp : dateien) {
+            Pattern pattern = null;
+            Image image = null;
+            ZipFile zipFile = new ZipFile(temp);
+            Enumeration entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry eintrag = (ZipEntry) entries.nextElement();
+                if (!eintrag.isDirectory()) {
+                    String name = eintrag.getName();
+                    String tempName = name.toUpperCase();
+                    InputStream inputStream = zipFile.getInputStream(eintrag);
+
+                    //convert InputStream to String
+                    int number = inputStream.available();
+                    byte[] buffer = new byte[number];
+                    inputStream.read(buffer);
+                    String content = new String(buffer);
+
+                    if (tempName.endsWith(".XML")) {
+                        pattern = readXML(content);
+                    }
+                    if (tempName.endsWith(".TMPL")) {
+                        String[] split = name.split("/");
+                        name = split[split.length - 1];
+                        templateList.put(name, content);
+                    }
+                    if (tempName.endsWith(".BMP") || tempName.endsWith(".JPG") || tempName.endsWith(".GIF")) {
+                        try {
+                            ByteArrayInputStream tempStream = new ByteArrayInputStream(buffer);
+                            image = ImageIO.read(tempStream);
+                        } catch (Throwable t) {
+                            new ErrorDialog(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("IMAGE_NOT_CREATED") + t.getMessage(), t).setVisible(true);
+                        }
+                    }
+
+
+                }
             }
-         }
-         pattern.setImage(image);
-         
-         PatternComponent[] allComponents = pattern.getAllComponents();
-         for (PatternComponent tempComponent : allComponents)
-         {
-            String[] tempTemplate = tempComponent.getTemplate().split("/");
-            String template = templateList.get(tempTemplate[tempTemplate.length - 1]);
-            tempComponent.setTemplate(template);
-         }
-      }
-   }
+            pattern.setImage(image);
 
-   /**
-    * Returns a ComboBoxModel containing all pattern Categories
-    *
-    * @return ComboBoxModel
-    */
-   public DefaultComboBoxModel getComboBoxModel()
-   {
-      return new DefaultComboBoxModel(EnumPatterns.values());
-   }
+            PatternComponent[] allComponents = pattern.getAllComponents();
+            for (PatternComponent tempComponent : allComponents) {
+                String[] tempTemplate = tempComponent.getTemplate().split("/");
+                String template = templateList.get(tempTemplate[tempTemplate.length - 1]);
+                tempComponent.setTemplate(template);
+            }
+        }
+    }
 
-   /**
-    * Reads the pattern description and validates it against the schema file.
-    * Adds then the new pattern to the list of patterns
-    *
-    * @param is Description of pattern in XML-format
-    * @throws FileNotFoundException
-    * @throws IOException
-    * @throws SAXException
-    * @throws ParserConfigurationException
-    */
-   private Pattern readXML(String content)
-           throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, Exception
-   {
-      // Validate data
-      String schemaDir = FileHandler.findSchemaDir();
-      XMLUtils.validate(schemaDir, content);
+    /**
+     * Returns a ComboBoxModel containing all pattern Categories
+     *
+     * @return ComboBoxModel
+     */
+    public DefaultComboBoxModel getComboBoxModel() {
+        return new DefaultComboBoxModel(EnumPatterns.values());
+    }
 
-      // Read data and create Pattern  
-      Document document = XMLUtils.readFile(content);
-      Pattern tempPattern = XMLUtils.createPattern(document);
-      
-      patterns.add(tempPattern);
-      Collections.sort(patterns);
-      
-      return tempPattern;
-   }
-   
-   @Override
-   public String toString()
-   {
-      return DESCRIPTION;
-   }
+    /**
+     * Reads the pattern description and validates it against the schema file.
+     * Adds then the new pattern to the list of patterns
+     *
+     * @param is Description of pattern in XML-format
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
+    private Pattern readXML(String content)
+            throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, Exception {
+        // Validate data
+        String schemaDir = FileHandler.findSchemaDir();
+        XMLUtils.validate(schemaDir, content);
+
+        // Read data and create Pattern  
+        Document document = XMLUtils.readFile(content);
+        Pattern tempPattern = XMLUtils.createPattern(document);
+
+        patterns.add(tempPattern);
+        Collections.sort(patterns);
+
+        return tempPattern;
+    }
+
+    @Override
+    public String toString() {
+        return DESCRIPTION;
+    }
 }
