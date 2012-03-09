@@ -20,6 +20,7 @@ package org.patterncoder.dataModel;
 
 import java.awt.Image;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -37,8 +38,8 @@ import org.xml.sax.SAXException;
  *
  * @author Florian Siebler
  */
-public enum EnumPatterns {
-
+public enum EnumPatterns
+{
     BASIC(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_BASIC RELATIONSHIP"), "basic", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_BASIC")),
     CREATIONAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_CREATIONAL_PATTERNS"), "creational", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_CREATIONAL")),
     BEHAVIOURAL(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("NAME_BEHAVIORAL_PATTERNS"), "behavioral", java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("DESC_BEHAVIORAL")),
@@ -67,7 +68,8 @@ public enum EnumPatterns {
      * @param description Description of Enum
      * @param subDir Directory where the patternFiles are stored
      */
-    private EnumPatterns(String description, String subDir, String explain) {
+    private EnumPatterns(String description, String subDir, String explain)
+    {
         this.DESCRIPTION = description;
         this.SUB_DIR = subDir;
         this.EXPLAIN = explain;
@@ -79,14 +81,16 @@ public enum EnumPatterns {
      *
      * @return Explanation of category
      */
-    public String getExplanation() {
+    public String getExplanation()
+    {
         return EXPLAIN;
     }
 
     /**
      * Creates a new list of patterns
      */
-    public void resetPatterns() {
+    public void resetPatterns()
+    {
         patterns = new ArrayList<Pattern>();
     }
 
@@ -96,7 +100,8 @@ public enum EnumPatterns {
      * @param node Node to search
      * @return Index of node in list
      */
-    int getIndexOf(Object node) {
+    int getIndexOf(Object node)
+    {
         return patterns.indexOf(node);
     }
 
@@ -105,7 +110,8 @@ public enum EnumPatterns {
      *
      * @return Number of patterns
      */
-    public int size() {
+    public int size()
+    {
         return patterns.size();
     }
 
@@ -115,51 +121,80 @@ public enum EnumPatterns {
      * @param index Index of the pattern in this category
      * @return Specified pattern
      */
-    public Pattern get(int index) {
+    public Pattern get(int index)
+    {
         return patterns.get(index);
     }
 
     public void init()
-            throws FileNotFoundException, ZipException, IOException, SAXException, ParserConfigurationException, Exception {
+            throws FileNotFoundException, ZipException, IOException, SAXException, ParserConfigurationException, Exception
+    {
         this.resetPatterns();
         Map<String, String> templateList = new HashMap<String, String>();
         File coderDir = FileHandler.findPatternCoderDir();
         File patDir = new File(coderDir, SUB_DIR);
-        if (!patDir.exists()) {
+        if (!patDir.exists())
+        {
             patDir.mkdir();
         }
         File[] dateien = patDir.listFiles();
-        for (File temp : dateien) {
+        for (File temp : dateien)
+        {
             Pattern pattern = null;
             Image image = null;
             ZipFile zipFile = new ZipFile(temp);
             Enumeration entries = zipFile.entries();
-            while (entries.hasMoreElements()) {
+
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+            while (entries.hasMoreElements())
+            {
+                buffer.clear();
+
                 ZipEntry eintrag = (ZipEntry) entries.nextElement();
-                if (!eintrag.isDirectory()) {
+                if (!eintrag.isDirectory())
+                {
                     String name = eintrag.getName();
                     String tempName = name.toUpperCase();
                     InputStream inputStream = zipFile.getInputStream(eintrag);
 
                     //convert InputStream to String
                     int number = inputStream.available();
-                    byte[] buffer = new byte[number];
-                    inputStream.read(buffer);
-                    String content = new String(buffer);
 
-                    if (tempName.endsWith(".XML")) {
+                    int read;
+                    while ((read = inputStream.read(buffer.array(), buffer.position(), buffer.remaining())) != -1)
+                    {
+                        buffer.position(buffer.position() + read);
+                        if (buffer.remaining() == 0)
+                        {
+                            ByteBuffer copy = ByteBuffer.allocate(buffer.capacity() * 2);
+                            buffer.flip();
+                            copy.put(buffer);
+                            buffer = copy;
+                        }
+                    }
+
+                    if (tempName.endsWith(".XML"))
+                    {
+                        String content = new String(buffer.array(), 0, buffer.position());
                         pattern = readXML(content);
                     }
-                    if (tempName.endsWith(".TMPL")) {
+                    if (tempName.endsWith(".TMPL"))
+                    {
+                        String content = new String(buffer.array(), 0, buffer.position());
                         String[] split = name.split("/");
                         name = split[split.length - 1];
                         templateList.put(name, content);
                     }
-                    if (tempName.endsWith(".BMP") || tempName.endsWith(".JPG") || tempName.endsWith(".GIF")) {
-                        try {
-                            ByteArrayInputStream tempStream = new ByteArrayInputStream(buffer);
+                    if (tempName.endsWith(".BMP") || tempName.endsWith(".JPG") || tempName.endsWith(".GIF"))
+                    {
+                        try
+                        {
+                            ByteArrayInputStream tempStream = new ByteArrayInputStream(buffer.array(), 0, buffer.position());
                             image = ImageIO.read(tempStream);
-                        } catch (Throwable t) {
+                        }
+                        catch (Throwable t)
+                        {
                             new ErrorDialog(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("IMAGE_NOT_CREATED") + t.getMessage(), t).setVisible(true);
                         }
                     }
@@ -170,7 +205,8 @@ public enum EnumPatterns {
             pattern.setImage(image);
 
             PatternComponent[] allComponents = pattern.getAllComponents();
-            for (PatternComponent tempComponent : allComponents) {
+            for (PatternComponent tempComponent : allComponents)
+            {
                 String[] tempTemplate = tempComponent.getTemplate().split("/");
                 String template = templateList.get(tempTemplate[tempTemplate.length - 1]);
                 tempComponent.setTemplate(template);
@@ -183,7 +219,8 @@ public enum EnumPatterns {
      *
      * @return ComboBoxModel
      */
-    public DefaultComboBoxModel getComboBoxModel() {
+    public DefaultComboBoxModel getComboBoxModel()
+    {
         return new DefaultComboBoxModel(EnumPatterns.values());
     }
 
@@ -198,7 +235,8 @@ public enum EnumPatterns {
      * @throws ParserConfigurationException
      */
     private Pattern readXML(String content)
-            throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, Exception {
+            throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, Exception
+    {
         // Validate data
         String schemaDir = FileHandler.findSchemaDir();
         XMLUtils.validate(schemaDir, content);
@@ -214,7 +252,8 @@ public enum EnumPatterns {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return DESCRIPTION;
     }
 }
