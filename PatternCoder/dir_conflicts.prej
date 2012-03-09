@@ -1,0 +1,6 @@
+Trying to delete property 'svn:ignore' with value 'build
+'
+ but it has been modified from 'build
+' to 'build
+dist
+'.
