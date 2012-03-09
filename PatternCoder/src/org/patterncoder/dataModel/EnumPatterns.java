@@ -197,9 +197,7 @@ public enum EnumPatterns
                         {
                             new ErrorDialog(java.util.ResourceBundle.getBundle("org/patterncoder/dataModel/Bundle").getString("IMAGE_NOT_CREATED") + t.getMessage(), t).setVisible(true);
                         }
-                    }
-
-
+                    } 
                 }
             }
             pattern.setImage(image);
