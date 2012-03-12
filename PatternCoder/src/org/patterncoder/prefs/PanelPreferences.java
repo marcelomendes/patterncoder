@@ -2,9 +2,7 @@ package org.patterncoder.prefs;
 
 import bluej.extensions.BlueJ;
 import bluej.extensions.PreferenceGenerator;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
-import org.patterncoder.dataModel.EnumPatterns;
 import org.patterncoder.delegate.PatternCoderFrame;
 
 /**
