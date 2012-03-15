@@ -93,11 +93,11 @@ public class PatternCoderFrame extends javax.swing.JFrame
       lblStepDesc.setText(STEP_DESC_DEFAULT);
       lblDescription.setText("About patternCoder");
       pnlImage.setBorder(new EtchedBorder());
-      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       pnlInput.setVisible(false);
       URL fileURL = getClass().getResource("patterncoder.gif");
       Image image = Toolkit.getDefaultToolkit().getImage(fileURL);
       setIconImage(image);
+      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
    }
 
    /**
