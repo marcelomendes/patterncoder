@@ -41,39 +41,46 @@ import org.patterncoder.utils.PatternCoderUtils;
  */
 public class PatternCoderFrame extends javax.swing.JFrame
 {
-   public static final PatternCoderTreeModel patternTree = new PatternCoderTreeModel();
-   private final String BTN_NEXT_FINISH_TEXT = "Finish";
-   private final String BTN_NEXT = "<next>";
-   private final String STEP_DESC_DEFAULT = "Select the design pattern you wish to adopt and click " + BTN_NEXT;
-   /**
-    * Current selected pattern
-    */
-   private Pattern currentPattern;
-   /**
-    * current selected step of currentPattern
-    */
-   private PatternComponent currentComponent;
-   /**
-    * Directory where you find the image files
-    */
-   private String imageDir;
-   /**
-    * Describes what patternCoder is
-    */
-   private final String WHAT_IS_PATTERNCODER = "<style type=\"text/css\">body "
-           + "{font-size: 12pt; font-family: san-serif;color: #008800 }</style><body>"
-           + "Project patternCoder is a software tool which has been developed to support "
-           + "learning of design patterns and class relationships, and their implementation "
-           + "in Java programs. It supports the transition from the UML class diagram to a "
-           + "working code implementation. It works as an extension to the BlueJ IDE, on "
-           + "Windows, Mac OS X and Linux.\n\nHow does it work? The tool guides students "
-           + "through a step-by-step process in which they select a suitable pattern or class relationship "
-           + "(as shown in the screenshot below) and replace generic class names with names which are relevant "
-           + "to their project domain. patternCoder then generates Java classes in the project - these classes "
-           + "will compile 'out-of-the-box' and will correctly implement the relationships. The student can then "
-           + "explore the generated classes to understand their behaviour, and then add the necessary code to meet "
-           + "the specific requirements of their project." + "</body>";
-   private BlueJ blueJ;
+    public static final PatternCoderTreeModel patternTree = new PatternCoderTreeModel();
+    private final String BTN_NEXT_FINISH_TEXT = "Finish";
+    private final String BTN_NEXT = "<next>";
+    private final String STEP_DESC_DEFAULT = "Select the design pattern you wish to adopt and click " + BTN_NEXT;
+    /**
+     * Current selected pattern
+     */
+    private Pattern currentPattern;
+    /**
+     * current selected step of currentPattern
+     */
+    private PatternComponent currentComponent;
+    /**
+     * Directory where you find the image files
+     */
+    private String imageDir;
+    /**
+     * Prefix of strings to be shown
+     */
+    private final String INFORMATION_PREFIX = "<style type=\"text/css\">body "
+            + "{font-size: 12pt; font-family: san-serif;color: #008800 }</style><body>";
+    /**
+     * Postfix of strings to be shown
+     */
+    private final String INFORMATION_POSTFIX = "</body>";
+    /**
+     * Describes what patternCoder is
+     */
+    private final String WHAT_IS_PATTERNCODER = INFORMATION_PREFIX
+            + "Project patternCoder is a software tool which has been developed to support "
+            + "learning of design patterns and class relationships, and their implementation "
+            + "in Java programs. It supports the transition from the UML class diagram to a "
+            + "working code implementation. It works as an extension to the BlueJ IDE, on "
+            + "Windows, Mac OS X and Linux.\n\nHow does it work? The tool guides students "
+            + "through a step-by-step process in which they select a suitable pattern or class relationship "
+            + "(as shown in the screenshot below) and replace generic class names with names which are relevant "
+            + "to their project domain. patternCoder then generates Java classes in the project - these classes "
+            + "will compile 'out-of-the-box' and will correctly implement the relationships. The student can then "
+            + "explore the generated classes to understand their behaviour, and then add the necessary code to meet "
+            + "the specific requirements of their project." + INFORMATION_POSTFIX;
 
    /**
     * Creates PatternCoderFrame
@@ -91,64 +98,6 @@ public class PatternCoderFrame extends javax.swing.JFrame
       URL fileURL = getClass().getResource("patterncoder.gif");
       Image image = Toolkit.getDefaultToolkit().getImage(fileURL);
       setIconImage(image);
-      setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-      /*
-       * Reacts when user changes the value of edit field edtName (class name).
-       * Sets the name of the current loaded class to the input string. As the
-       * listener is quite "sensibel" it may be actived even if the user doesn't
-       * change the text; for that reason the setClassName-method is put in
-       * try-catch
-       */
-      edtName.getDocument().addDocumentListener(new DocumentListener()
-      {
-         /**
-          * Changes the classname
-          */
-         private void changeClassName()
-         {
-            String name = edtName.getText();
-            try
-            {
-               if (PatternCoderUtils.verifyName(name))
-               {
-                  currentComponent.setClassName(name);
-               }
-               else
-               {
-                  currentComponent.setClassName("ClassName");
-               }
-            }
-            catch (Throwable t)
-            {
-               // nothing to do
-            }
-         }
-
-         @Override
-         public void insertUpdate(DocumentEvent e)
-         {
-            changeClassName();
-         }
-
-         @Override
-         public void removeUpdate(DocumentEvent e)
-         {
-            changeClassName();
-         }
-
-         @Override
-         public void changedUpdate(DocumentEvent e)
-         {
-            changeClassName();
-         }
-      });
-   }
-
-   public PatternCoderFrame(BlueJ blueJ)
-   {
-      this();
-      this.blueJ = blueJ;
    }
 
    /**
@@ -167,17 +116,13 @@ public class PatternCoderFrame extends javax.swing.JFrame
     */
    private void startPattern()
    {
+      btnNext.setEnabled(true);
       btnBack.setEnabled(false);
       pnlInput.setVisible(false);
-      edtComponent.setText("");
-      edtName.setText("");
-      btnNext.setEnabled(true);
-      txtDescription.setText("<style type=\"text/css\">body "
-              + "{font-size: 12pt; font-family: san-serif;color: #008800 }"
-              + "</style>" + "<body>" + currentPattern.DESC + "</body>");
+      txtDescription.setText(INFORMATION_PREFIX + currentPattern.DESC + INFORMATION_POSTFIX);
       lblDesignPattern.setText(currentPattern.NAME + " (Overview)");
       lblStepDesc.setText("For further information click <next>");
-
+      currentComponent = null;
       Image image = currentPattern.getImage();
       showImage(image);
    }
@@ -187,16 +132,17 @@ public class PatternCoderFrame extends javax.swing.JFrame
     *
     * @param currentComponent
     */
-   private void loadStep(int tempStep, int stepCount)
+   private void loadComponent(PatternComponent component)
    {
-      edtComponent.setText(currentComponent.COMP_TYPE);
-      edtName.setText(currentComponent.getClassName());
-      txtDescription.setText(currentComponent.DESC);
-      lblDesignPattern.setText(" Step " + (tempStep + 1) + " of " + stepCount + ": " + currentComponent.getWizardName());
-      lblStepDesc.setText(currentComponent.getWizardDesc());
+      edtComponent.setText(component.COMP_TYPE);
+      edtName.setText(component.getClassName());
+      txtDescription.setText(component.DESC);
+      lblStepDesc.setText(component.getWizardDesc());
+      String information = "Step " + component.CLASS_ID + " of " + currentPattern.stepCount() + ": " + currentComponent.getWizardName();
+      lblDesignPattern.setText(information);
    }
 
-   @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -451,7 +397,7 @@ public class PatternCoderFrame extends javax.swing.JFrame
 
     private void trvPatternsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_trvPatternsMouseClicked
     {//GEN-HEADEREND:event_trvPatternsMouseClicked
-       currentComponent = null;
+     currentComponent = null;
        Object selectedComponent = trvPatterns.getLastSelectedPathComponent();
        if (selectedComponent.getClass() == Pattern.class)
        /*
@@ -484,8 +430,7 @@ public class PatternCoderFrame extends javax.swing.JFrame
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnNextActionPerformed
     {//GEN-HEADEREND:event_btnNextActionPerformed
-btnNext.setEnabled(true);
-        if (btnNext.getText().equalsIgnoreCase(BTN_NEXT_FINISH_TEXT))
+         if (currentPattern.isLastComponent(currentComponent))
        {
           try
           {
@@ -503,27 +448,27 @@ btnNext.setEnabled(true);
           {
              new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
           }
-          this.dispose();
+          finally
+          {
+             this.dispose();
+          }
        }
        else
        {
-          btnBack.setEnabled(true);
           if (currentComponent == null)
           {
              currentComponent = currentPattern.getFirstComponent();
-             btnBack.setEnabled(true);
              pnlInput.setVisible(true);
           }
           else
           {
-             currentComponent = currentPattern.getComponent(currentComponent.CLASS_ID);
+             btnBack.setEnabled(true);
+             currentComponent.setClassName(edtName.getText());
+             currentComponent = currentPattern.getNextComponent(currentComponent);
           }
-          int stepCount = currentPattern.stepCount();
-          int step = currentPattern.getStepNumber(currentComponent);
-          loadStep(step, stepCount);
-          if ((step + 1) == stepCount)
+          loadComponent(currentComponent);
+          if (currentPattern.isLastComponent(currentComponent))
           {
-             // Reached last component
              btnNext.setText(BTN_NEXT_FINISH_TEXT);
           }
        }
@@ -531,32 +476,29 @@ btnNext.setEnabled(true);
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBackActionPerformed
     {//GEN-HEADEREND:event_btnBackActionPerformed
-       int step = currentPattern.getStepNumber(currentComponent);
-       if (step == 0)
+       PatternComponent tempFirstComponent = currentPattern.getFirstComponent();
+       PatternComponent previousComponent = currentPattern.getPreviousComponent(currentComponent);
+       if (tempFirstComponent == previousComponent)
        {
-          this.startPattern();
+          btnBack.setEnabled(false);
        }
-       else
-       {
-          currentComponent = currentPattern.getComponent(step - 1);
-          int stepCount = currentPattern.stepCount();
-          loadStep(step, stepCount);
-          btnNext.setText("Next >");
-       }
+       currentComponent = previousComponent;
+       loadComponent(currentComponent);
+       btnNext.setText("Next >");
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCancelActionPerformed
     {//GEN-HEADEREND:event_btnCancelActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void pnlImageComponentResized(java.awt.event.ComponentEvent evt)//GEN-FIRST:event_pnlImageComponentResized
     {//GEN-HEADEREND:event_pnlImageComponentResized
-       if (currentPattern != null)
-       {
-          Image image = currentPattern.getImage();
-          this.showImage(image);
-       }
+        if (currentPattern != null)
+        {
+            Image image = currentPattern.getImage();
+            this.showImage(image);
+        }
     }//GEN-LAST:event_pnlImageComponentResized
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
