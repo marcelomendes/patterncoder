@@ -172,7 +172,7 @@ public class PatternCoder extends Extension implements ActionListener
                 tempEnum.init();
             }
             FileHandler.setPackage(recentPackage);
-            patFrame = new PatternCoderFrame(bluej);
+            patFrame = new PatternCoderFrame();
             patFrame.setVisible(true);
 
         }
