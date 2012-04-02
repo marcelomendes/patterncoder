@@ -13,6 +13,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import org.patterncoder.dataModel.Pattern;
 import org.patterncoder.dataModel.PatternComponent;
+import org.patterncoder.delegate.ErrorDialog;
 import org.w3c.dom.*;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -189,7 +190,6 @@ public class XMLUtils
         DocumentBuilder builder = getDocumentBuilder();
         Document document = builder.parse(new InputSource(new StringReader(xml)));
         return document;
-
     }
 
     private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException

@@ -18,7 +18,6 @@
  */
 package org.patterncoder.delegate;
 
-import bluej.extensions.BlueJ;
 import bluej.extensions.PackageNotFoundException;
 import bluej.extensions.ProjectNotOpenException;
 import java.awt.Image;
@@ -27,8 +26,6 @@ import java.io.IOException;
 import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import org.patterncoder.dataModel.EnumPatterns;
 import org.patterncoder.dataModel.Pattern;
 import org.patterncoder.dataModel.PatternCoderTreeModel;
@@ -82,66 +79,66 @@ public class PatternCoderFrame extends javax.swing.JFrame
             + "explore the generated classes to understand their behaviour, and then add the necessary code to meet "
             + "the specific requirements of their project." + INFORMATION_POSTFIX;
 
-   /**
-    * Creates PatternCoderFrame
-    */
-   public PatternCoderFrame()
-   {
-      initComponents();
-      txtDescription.setText(WHAT_IS_PATTERNCODER);
-      setLocationRelativeTo(null);
-      lblStepDesc.setText(STEP_DESC_DEFAULT);
-      lblDescription.setText("About patternCoder");
-      pnlImage.setBorder(new EtchedBorder());
-      pnlInput.setVisible(false);
-      URL fileURL = getClass().getResource("patterncoder.gif");
-      Image image = Toolkit.getDefaultToolkit().getImage(fileURL);
-      setIconImage(image);
-      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-   }
+    /**
+     * Creates PatternCoderFrame
+     */
+    public PatternCoderFrame()
+    {
+        initComponents();
+        txtDescription.setText(WHAT_IS_PATTERNCODER);
+        setLocationRelativeTo(null);
+        lblStepDesc.setText(STEP_DESC_DEFAULT);
+        lblDescription.setText("About patternCoder");
+        pnlImage.setBorder(new EtchedBorder());
+        pnlInput.setVisible(false);
+        URL fileURL = getClass().getResource("patterncoder.gif");
+        Image image = Toolkit.getDefaultToolkit().getImage(fileURL);
+        setIconImage(image);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
 
-   /**
-    * Shows an image in the panel on the left side
-    *
-    * @param imagePfad Path to the image file
-    */
-   private void showImage(Image image)
-   {
-      pnlImage.setImage(image);
-      pnlImage.repaint();
-   }
+    /**
+     * Shows an image in the panel on the left side
+     *
+     * @param imagePfad Path to the image file
+     */
+    private void showImage(Image image)
+    {
+        pnlImage.setImage(image);
+        pnlImage.repaint();
+    }
 
-   /**
-    * Sets the GUI to a valid state when the users clicks on a pattern-leaf
-    */
-   private void startPattern()
-   {
-      btnNext.setEnabled(true);
-      btnBack.setEnabled(false);
-      pnlInput.setVisible(false);
-      txtDescription.setText(INFORMATION_PREFIX + currentPattern.DESC + INFORMATION_POSTFIX);
-      lblDesignPattern.setText(currentPattern.NAME + " (Overview)");
-      lblStepDesc.setText("For further information click <next>");
-      currentComponent = null;
-      Image image = currentPattern.getImage();
-      showImage(image);
-   }
+    /**
+     * Sets the GUI to a valid state when the users clicks on a pattern-leaf
+     */
+    private void startPattern()
+    {
+        btnNext.setEnabled(true);
+        btnBack.setEnabled(false);
+        pnlInput.setVisible(false);
+        txtDescription.setText(INFORMATION_PREFIX + currentPattern.DESC + INFORMATION_POSTFIX);
+        lblDesignPattern.setText(currentPattern.NAME + " (Overview)");
+        lblStepDesc.setText("For further information click <next>");
+        currentComponent = null;
+        Image image = currentPattern.getImage();
+        showImage(image);
+    }
 
-   /**
-    * Loads a given component in the view
-    *
-    * @param currentComponent
-    */
-   private void loadComponent(PatternComponent component)
-   {
-      edtComponent.setText(component.COMP_TYPE);
-      edtName.setText(component.getClassName());
-      txtDescription.setText(component.DESC);
-      lblStepDesc.setText(component.getWizardDesc());
-      String information = "Step " + component.CLASS_ID + " of " + currentPattern.stepCount() + ": " + currentComponent.getWizardName();
-      lblDesignPattern.setText(information);
-   }
-
+    /**
+     * Loads a given component in the view
+     *
+     * @param currentComponent
+     */
+    private void loadComponent(PatternComponent component)
+    {
+        edtComponent.setText(component.COMP_TYPE);
+        edtName.setText(component.getClassName());
+        txtDescription.setText(component.DESC);
+        lblStepDesc.setText(component.getWizardDesc());
+        String information = "Step " + component.CLASS_ID + " of " + currentPattern.stepCount() + ": " + currentComponent.getWizardName();
+        lblDesignPattern.setText(information);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -397,101 +394,103 @@ public class PatternCoderFrame extends javax.swing.JFrame
 
     private void trvPatternsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_trvPatternsMouseClicked
     {//GEN-HEADEREND:event_trvPatternsMouseClicked
-     currentComponent = null;
-       Object selectedComponent = trvPatterns.getLastSelectedPathComponent();
-       if (selectedComponent.getClass() == Pattern.class)
-       /*
-        * If the selected node is an instance of Pattern then show it's overview
-        */
-       {
-          currentPattern = (Pattern) selectedComponent;
-          startPattern();
-       }
-       else
-       {
-          showImage(null);
-          lblDescription.setText("About patternCoder");
-          lblStepDesc.setText(STEP_DESC_DEFAULT);
-          txtDescription.setText(WHAT_IS_PATTERNCODER);
-          if (selectedComponent.getClass() == EnumPatterns.class)
-          {
-             EnumPatterns patternCategory = (EnumPatterns) selectedComponent;
-             String tempDesc = patternCategory.toString();
-             lblDescription.setText(tempDesc);
-             txtDescription.setText(patternCategory.getExplanation());
-          }
-          pnlInput.setVisible(false);
-          btnNext.setEnabled(false);
-          currentPattern = null;
-          lblDesignPattern.setText("Select a pattern");
-       }
-       btnBack.setEnabled(false);
+        currentComponent = null;
+        Object selectedComponent = trvPatterns.getLastSelectedPathComponent();
+        if (selectedComponent.getClass() == Pattern.class)
+        /*
+         * If the selected node is an instance of Pattern then show it's
+         * overview
+         */
+        {
+            currentPattern = (Pattern) selectedComponent;
+            startPattern();
+        }
+        else
+        {
+            showImage(null);
+            lblDescription.setText("About patternCoder");
+            lblStepDesc.setText(STEP_DESC_DEFAULT);
+            txtDescription.setText(WHAT_IS_PATTERNCODER);
+            if (selectedComponent.getClass() == EnumPatterns.class)
+            {
+                EnumPatterns patternCategory = (EnumPatterns) selectedComponent;
+                String tempDesc = patternCategory.toString();
+                lblDescription.setText(tempDesc);
+                txtDescription.setText(patternCategory.getExplanation());
+            }
+            pnlInput.setVisible(false);
+            btnNext.setEnabled(false);
+            currentPattern = null;
+            lblDesignPattern.setText("Select a pattern");
+        }
+        btnBack.setEnabled(false);
     }//GEN-LAST:event_trvPatternsMouseClicked
-
+    
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnNextActionPerformed
     {//GEN-HEADEREND:event_btnNextActionPerformed
-         if (currentPattern.isLastComponent(currentComponent))
-       {
-          try
-          {
-             PatternCoderUtils.createFiles(currentPattern);
-          }
-          catch (ProjectNotOpenException ex)
-          {
-             new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
-          }
-          catch (PackageNotFoundException ex)
-          {
-             new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
-          }
-          catch (IOException ex)
-          {
-             new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
-          }
-          finally
-          {
-             this.dispose();
-          }
-       }
-       else
-       {
-          if (currentComponent == null)
-          {
-             currentComponent = currentPattern.getFirstComponent();
-             pnlInput.setVisible(true);
-          }
-          else
-          {
-             btnBack.setEnabled(true);
-             currentComponent.setClassName(edtName.getText());
-             currentComponent = currentPattern.getNextComponent(currentComponent);
-          }
-          loadComponent(currentComponent);
-          if (currentPattern.isLastComponent(currentComponent))
-          {
-             btnNext.setText(BTN_NEXT_FINISH_TEXT);
-          }
-       }
+        if (currentPattern.isLastComponent(currentComponent))
+        {
+            try
+            {
+                currentComponent.setClassName(edtName.getText());
+                PatternCoderUtils.createFiles(currentPattern);
+            }
+            catch (ProjectNotOpenException ex)
+            {
+                new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
+            }
+            catch (PackageNotFoundException ex)
+            {
+                new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
+            }
+            catch (IOException ex)
+            {
+                new ErrorDialog("PatternCoderFrame.nextButtonClick" + ex.getMessage(), ex).setVisible(true);
+            }
+            finally
+            {
+                this.dispose();
+            }
+        }
+        else
+        {
+            if (currentComponent == null)
+            {
+                currentComponent = currentPattern.getFirstComponent();
+                pnlInput.setVisible(true);
+            }
+            else
+            {
+                btnBack.setEnabled(true);
+                currentComponent.setClassName(edtName.getText());
+                currentComponent = currentPattern.getNextComponent(currentComponent);
+            }
+            loadComponent(currentComponent);
+            if (currentPattern.isLastComponent(currentComponent))
+            {
+                btnNext.setText(BTN_NEXT_FINISH_TEXT);
+            }
+        }
     }//GEN-LAST:event_btnNextActionPerformed
-
+    
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBackActionPerformed
     {//GEN-HEADEREND:event_btnBackActionPerformed
-       PatternComponent tempFirstComponent = currentPattern.getFirstComponent();
-       PatternComponent previousComponent = currentPattern.getPreviousComponent(currentComponent);
-       if (tempFirstComponent == previousComponent)
-       {
-          btnBack.setEnabled(false);
-       }
-       currentComponent = previousComponent;
-       loadComponent(currentComponent);
-       btnNext.setText("Next >");
+        PatternComponent tempFirstComponent = currentPattern.getFirstComponent();
+        PatternComponent previousComponent = currentPattern.getPreviousComponent(currentComponent);
+        if (tempFirstComponent == previousComponent)
+        {
+            btnBack.setEnabled(false);
+        }
+        currentComponent = previousComponent;
+        loadComponent(currentComponent);
+        btnNext.setText("Next >");
     }//GEN-LAST:event_btnBackActionPerformed
-
+    
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCancelActionPerformed
     {//GEN-HEADEREND:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-
+    
     private void pnlImageComponentResized(java.awt.event.ComponentEvent evt)//GEN-FIRST:event_pnlImageComponentResized
     {//GEN-HEADEREND:event_pnlImageComponentResized
         if (currentPattern != null)

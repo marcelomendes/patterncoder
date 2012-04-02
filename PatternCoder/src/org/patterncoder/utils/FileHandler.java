@@ -21,7 +21,6 @@ import bluej.extensions.ProjectNotOpenException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 import org.patterncoder.delegate.ErrorDialog;
 
 /**
