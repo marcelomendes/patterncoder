@@ -30,41 +30,41 @@ import javax.swing.ImageIcon;
  */
 public class PanelImage extends javax.swing.JPanel
 {
-   private Image image;
+    private Image image;
 
-   public PanelImage()
-   {
-      initComponents();
-   }
+    public PanelImage()
+    {
+        initComponents();
+    }
 
-   /**
-    * Sets the image to show
-    *
-    * @param image Image that will be displayed
-    */
-   public void setImage(Image image)
-   {
-      this.image = image;
-      this.repaint();
-   }
+    /**
+     * Sets the image to show
+     *
+     * @param image Image that will be displayed
+     */
+    public void setImage(Image image)
+    {
+        this.image = image;
+        this.repaint();
+    }
 
-   @Override
-   public void paintComponent(Graphics g)
-   {
-      super.paintComponent(g); 
-      if (image != null)
-      {
-         ImageIcon background = new ImageIcon(image);
-         Dimension dimension = getSize();
-         int x = 0;
-         int y = 0;
-         int width =  dimension.width;
-         int height =  dimension.height;  
-         g.drawImage(background.getImage(), x, y, width, height, this);
-      }
-   } 
+    @Override
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        if (image != null)
+        {
+            ImageIcon background = new ImageIcon(image);
+            Dimension dimension = getSize();
+            int x = 0;
+            int y = 0;
+            int width = dimension.width;
+            int height = dimension.height;
+            g.drawImage(background.getImage(), x, y, width, height, this);
+        }
+    }
 
-   @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

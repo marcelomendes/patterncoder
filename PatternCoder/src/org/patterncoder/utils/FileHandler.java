@@ -28,19 +28,21 @@ import org.patterncoder.delegate.ErrorDialog;
  * @author Florian Siebler
  */
 public class FileHandler
-{ 
+{
     static File installDir;
-  private final   static String SEPARATOR = System.getProperty("file.separator");
+    private final static String SEPARATOR = System.getProperty("file.separator");
 
     static void reloadPackage()
     {
         try
         {
             myPackage.reload();
-        } catch (ProjectNotOpenException ex)
+        }
+        catch (ProjectNotOpenException ex)
         {
             (new ErrorDialog("BlueJHandler.reload()\n" + ex.getMessage(), ex)).setVisible(true);
-        } catch (PackageNotFoundException ex)
+        }
+        catch (PackageNotFoundException ex)
         {
             (new ErrorDialog("BlueJHandler.reload()\n" + ex.getMessage(), ex)).setVisible(true);
         }
@@ -153,7 +155,7 @@ public class FileHandler
      * @throws FileNotFoundException If PatternFile directory could not be found
      */
     public static File findPatternCoderDir() throws FileNotFoundException
-    { 
+    {
         if (filePatternCoderDir == null)
         {
             BlueJHandler blueJHandler = BlueJHandler.getInstance();
@@ -163,7 +165,8 @@ public class FileHandler
             {
                 installDir = new File(baseDir, EXTENSION_DIR_NAME);
                 return filePatternCoderDir;
-            } else
+            }
+            else
             {
                 baseDir = blueJHandler.getUserConfigDir();
                 filePatternCoderDir = new File(baseDir, EXTENSION_DIR_NAME + SEPARATOR + PATTERN_FILES_DIR_NAME);
@@ -171,7 +174,8 @@ public class FileHandler
                 {
                     installDir = new File(baseDir, EXTENSION_DIR_NAME);
                     return filePatternCoderDir;
-                } else
+                }
+                else
                 {
                     baseDir = BlueJHandler.getInstance().getProjectDir();
                     filePatternCoderDir = new File(baseDir, EXTENSION_DIR_NAME + SEPARATOR + PATTERN_FILES_DIR_NAME);
@@ -179,14 +183,16 @@ public class FileHandler
                     {
                         installDir = new File(baseDir, EXTENSION_DIR_NAME);
                         return filePatternCoderDir;
-                    } else
+                    }
+                    else
                     {
                         filePatternCoderDir = null;
                         throw new FileNotFoundException("Unable to find Patterns directory!");
                     }
                 }
             }
-        } else
+        }
+        else
         {
             return filePatternCoderDir;
         }

@@ -53,7 +53,7 @@ public class PatternCoderUtils
         };
         boolean wellFormed = true;
 
-        if (name.compareTo("") == 0)
+        if (name == null || name.isEmpty())
         {
             wellFormed = false;
         }

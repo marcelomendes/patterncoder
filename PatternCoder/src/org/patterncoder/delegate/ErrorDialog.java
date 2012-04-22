@@ -1,16 +1,16 @@
 /* Copyright (C) 2005 - 2007 the patternCoder team, http://www.patterncoder.org
-This file is part of the patternCoder application
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ This file is part of the patternCoder application
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package org.patterncoder.delegate;
 
@@ -19,14 +19,15 @@ import java.io.StringWriter;
 import org.patterncoder.PatternCoder;
 
 /**
- * Component that show the message and the stacktrace of an exception 
- * 
- * @author Florian Siebler 
+ * Component that show the message and the stacktrace of an exception
+ *
+ * @author Florian Siebler
  */
 public class ErrorDialog extends javax.swing.JDialog
 {
     /**
      * Initialize the components
+     *
      * @param warning Message to display
      */
     private ErrorDialog(String warning)
@@ -38,9 +39,11 @@ public class ErrorDialog extends javax.swing.JDialog
 
     /**
      * Initialize the components
+     *
      * @param title Title of dialog
      * @param warning Message to display
-     * @param throwable Throwable that has been thrown; if null, the tab for the stacktrace will disapeare
+     * @param throwable Throwable that has been thrown; if null, the tab for the
+     * stacktrace will disapeare
      */
     public ErrorDialog(String warning, Throwable throwable)
     {
@@ -52,7 +55,8 @@ public class ErrorDialog extends javax.swing.JDialog
         else
         {
             /**
-             * convert stacktrace message into strings, and encapsulated in a JTextArea
+             * convert stacktrace message into strings, and encapsulated in a
+             * JTextArea
              */
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);

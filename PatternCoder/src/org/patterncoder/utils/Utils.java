@@ -1,24 +1,10 @@
 package org.patterncoder.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
+import java.io.*;
 
 /**
  *
- * @author Siebler
+ * @author Florian Siebler 
  */
 public class Utils
 {
@@ -30,9 +16,10 @@ public class Utils
 
     /**
      * Liest eine UTF8-codierte Datei
-     * @param textFileName Name der zu lesenden Datei 
-     * @return Inhalt der Datei 
-     * @throws IOException 
+     *
+     * @param textFileName Name der zu lesenden Datei
+     * @return Inhalt der Datei
+     * @throws IOException
      */
     public static String readUTF8(String textFileName) throws IOException
     {
@@ -49,10 +36,11 @@ public class Utils
     }
 
     /**
-     * Schreibt eine UTF8-codierte Dtaei 
-     * @param textFileName Name der zu erstellenden Datei 
+     * Schreibt eine UTF8-codierte Dtaei
+     *
+     * @param textFileName Name der zu erstellenden Datei
      * @param content Inhalt der Datei
-     * @throws IOException 
+     * @throws IOException
      */
     public static void writeUTF8(String textFileName, String content) throws IOException
     {
@@ -62,14 +50,15 @@ public class Utils
         wr.write(content);
         wr.close();
         osw.close();
-        fos.close(); 
+        fos.close();
     }
 
     /**
      * Liest eine binaere Datei
-     * @param fileName Name der Datei 
-     * @return Inhalt der Datei 
-     * @throws IOException 
+     *
+     * @param fileName Name der Datei
+     * @return Inhalt der Datei
+     * @throws IOException
      */
     public static byte[] getBinaryFileContent(String fileName) throws IOException
     {
@@ -88,10 +77,11 @@ public class Utils
     }
 
     /**
-     * Schreibt eine binaere Datei 
-     * @param fileName Name der Datei 
-     * @param content Inhalt der zu schreibenden Datei 
-     * @throws IOException 
+     * Schreibt eine binaere Datei
+     *
+     * @param fileName Name der Datei
+     * @param content Inhalt der zu schreibenden Datei
+     * @throws IOException
      */
     public static void writeBinaryFileContent(String fileName, byte[] content) throws IOException
     {
@@ -108,10 +98,11 @@ public class Utils
     }
 
     /**
-     * Kopiert eine Datei 
+     * Kopiert eine Datei
+     *
      * @param srcName
      * @param dstName
-     * @throws IOException 
+     * @throws IOException
      */
     public static void copyFile(String srcName, String dstName) throws IOException
     {
@@ -129,9 +120,10 @@ public class Utils
 
     /**
      * Liest eine Text-Datei mit Default-Zeichensatz-Codierung
+     *
      * @param textFileName
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public static String getTextFileContent(String textFileName) throws IOException
     {

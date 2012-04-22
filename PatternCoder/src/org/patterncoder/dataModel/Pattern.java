@@ -25,9 +25,13 @@ import java.util.List;
 
 /**
  * Describes a design pattern with the attributes name, description, image and
- * components.<br> Examples: name = Observer<br> description = Define a one-to
- * many ...<br> image = Observer.bmp<br> components[0] = Observer<br>
- * components[1] = Observable<br> ... <br>
+ * components.<br> 
+ * Examples: name = Observer<br> 
+ * description = Define a one-to many ...<br> 
+ * image = Observer.bmp<br> 
+ * components[0] = Observer<br>
+ * components[1] = Observable<br> 
+ * ... <br>
  *
  * @author Florian Siebler
  */

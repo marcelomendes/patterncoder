@@ -31,7 +31,6 @@ import javax.swing.JMenuItem;
 import org.patterncoder.dataModel.EnumPatterns;
 import org.patterncoder.delegate.ErrorDialog;
 import org.patterncoder.delegate.PatternCoderFrame;
-import org.patterncoder.prefs.PanelPreferences;
 import org.patterncoder.utils.BlueJHandler;
 import org.patterncoder.utils.FileHandler;
 
@@ -66,9 +65,6 @@ public class PatternCoder extends Extension implements ActionListener
         FileHandler.setBlueJ(bluej);
 
         bluej.setMenuGenerator(new PatternCoderMenuGenerator());
-
-        PanelPreferences myPreferences = new PanelPreferences(bluej);
-        bluej.setPreferenceGenerator(myPreferences);
     }
 
     /**

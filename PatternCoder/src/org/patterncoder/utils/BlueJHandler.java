@@ -77,7 +77,7 @@ public class BlueJHandler
     }
 
     /**
-     * Returns the BlueJ directory.  
+     * Returns the BlueJ directory.
      *
      * @return the BlueJ directory.
      */

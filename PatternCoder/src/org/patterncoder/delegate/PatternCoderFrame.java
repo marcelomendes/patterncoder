@@ -51,10 +51,6 @@ public class PatternCoderFrame extends javax.swing.JFrame
      */
     private PatternComponent currentComponent;
     /**
-     * Directory where you find the image files
-     */
-    private String imageDir;
-    /**
      * Prefix of strings to be shown
      */
     private final String INFORMATION_PREFIX = "<style type=\"text/css\">body "
@@ -109,7 +105,8 @@ public class PatternCoderFrame extends javax.swing.JFrame
     }
 
     /**
-     * Sets the GUI to a valid state when the users clicks on a pattern-leaf
+     * Sets the GUI to a valid state when the users clicks on a leaf that is a
+     * pattern
      */
     private void startPattern()
     {
@@ -138,7 +135,7 @@ public class PatternCoderFrame extends javax.swing.JFrame
         String information = "Step " + component.CLASS_ID + " of " + currentPattern.stepCount() + ": " + currentComponent.getWizardName();
         lblDesignPattern.setText(information);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -425,7 +422,7 @@ public class PatternCoderFrame extends javax.swing.JFrame
         }
         btnBack.setEnabled(false);
     }//GEN-LAST:event_trvPatternsMouseClicked
-    
+
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnNextActionPerformed
     {//GEN-HEADEREND:event_btnNextActionPerformed
         if (currentPattern.isLastComponent(currentComponent))
@@ -472,7 +469,7 @@ public class PatternCoderFrame extends javax.swing.JFrame
             }
         }
     }//GEN-LAST:event_btnNextActionPerformed
-    
+
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBackActionPerformed
     {//GEN-HEADEREND:event_btnBackActionPerformed
         PatternComponent tempFirstComponent = currentPattern.getFirstComponent();
@@ -485,12 +482,12 @@ public class PatternCoderFrame extends javax.swing.JFrame
         loadComponent(currentComponent);
         btnNext.setText("Next >");
     }//GEN-LAST:event_btnBackActionPerformed
-    
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnCancelActionPerformed
     {//GEN-HEADEREND:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-    
+
     private void pnlImageComponentResized(java.awt.event.ComponentEvent evt)//GEN-FIRST:event_pnlImageComponentResized
     {//GEN-HEADEREND:event_pnlImageComponentResized
         if (currentPattern != null)
