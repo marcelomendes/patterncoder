@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="class">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="classDescription" />
+        <xs:element ref="dependantClass" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="classTemplate" type="xs:string" use="required" />
+      <xs:attribute name="compType" type="xs:string" use="required" />
+      <xs:attribute name="classId" type="xs:NMTOKEN" use="required" />
+      <xs:attribute name="defaultName" type="xs:NMTOKEN" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="classDescription">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="dependantClass">
+    <xs:complexType>
+      <xs:attribute name="value" type="xs:NMTOKEN" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="pattern">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="patternDescription"/>
+        <xs:element ref="class" maxOccurs="unbounded" />
+        <xs:element ref="wizard" />
+      </xs:sequence>
+      <xs:attribute name="patternName" type="xs:string" use="required" />
+      <xs:attribute name="patternImage" type="xs:NMTOKEN" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="patternDescription">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="step">
+    <xs:complexType>
+      <xs:attribute name="nextStepId" type="xs:string" use="required" />
+      <xs:attribute name="compId" type="xs:NMTOKEN" use="required" />
+      <xs:attribute name="type" type="xs:NMTOKEN" use="required" />
+      <xs:attribute name="stepDesc" type="xs:string" use="required" />
+      <xs:attribute name="previousStepId" type="xs:string" use="required" />
+      <xs:attribute name="stepId" type="xs:NMTOKEN" use="required" />
+      <xs:attribute name="stepName" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="wizard">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="step" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
