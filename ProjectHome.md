@@ -1,0 +1,1 @@
+patternCoder is a software tool which assists learning of design patterns and their application in Java programs. It supports the transition from the UML class diagram to a working code implementation.
